@@ -177,7 +177,7 @@ static void *writer_thread(void *parm)
         {
             /* Send Bundle */
             int bytes_sent = socksend(sock, bundle, bundle_size, SOCK_TIMEOUT);
-            if (bytes_sent != bundle_size)
+            if (bytes_sent != (int)bundle_size)
             {
                 fprintf(stderr, "Failed (%d) to send bundle over socket: %s\n", bytes_sent, strerror(errno));
             }

@@ -41,8 +41,27 @@
  */
 typedef uint32_t bp_crcval_t;
 
+/*
+ * Definition of generic-ish CRC data digest function.
+ * Updates the CRC based on the data in the given buffer.
+ */
+typedef bp_crcval_t (*bplib_crc_digest_func_t)(bp_crcval_t crc, const void *data, size_t size);
+
 /* Standard parameters for calculating a CRC. */
-struct bplib_crc_parameters;
+struct bplib_crc_parameters
+{
+    const char *name;                  /* Name of the CRC. */
+    uint8_t     length;                /* The number of bits in the CRC. */
+    bool        should_reflect_output; /* Whether to reflect the bits of the output crc. */
+
+    const uint8_t *input_table; /* A ptr to a table for input translation (reflect or direct) */
+    const void    *xor_table;   /* A ptr to a table with the precomputed XOR values. */
+
+    bplib_crc_digest_func_t digest; /* externally-callable "digest" routine to update CRC with new data */
+
+    bp_crcval_t initial_value; /* The value used to initialize a CRC (normalized). */
+    bp_crcval_t final_xor;     /* The final value to xor with the crc before returning (normalized). */
+};
 typedef const struct bplib_crc_parameters bplib_crc_parameters_t;
 
 /*

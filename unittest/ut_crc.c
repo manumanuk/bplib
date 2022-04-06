@@ -73,7 +73,7 @@ static void print_xor_table(bplib_crc_parameters_t *params)
     int index, i, j;
     if (params->length == 16)
     {
-        const uint16_t *table = params->n_bit_params.crc16.xor_table;
+        const uint16_t *table = params->xor_table;
         for (i = 0; i < 16; i++)
         {
             for (j = 0; j < 16; j++)
@@ -86,7 +86,7 @@ static void print_xor_table(bplib_crc_parameters_t *params)
     }
     else if (params->length == 32)
     {
-        const uint32_t *table = params->n_bit_params.crc32.xor_table;
+        const uint32_t *table = params->xor_table;
         for (i = 0; i < 16; i++)
         {
             for (j = 0; j < 16; j++)
@@ -110,31 +110,7 @@ static void print_xor_table(bplib_crc_parameters_t *params)
  *-------------------------------------------------------------------------------------*/
 static bool validate_crc_parameters(bplib_crc_parameters_t *params)
 {
-    uint8_t check_message[9] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
-    printf("Input Message:\n");
-    print_binary(check_message, 9, 0);
-    if (params->length == 16)
-    {
-        uint16_t check_value = params->n_bit_params.crc16.check_value;
-        uint16_t crc         = (uint16_t)bplib_crc_get(check_message, 9, params);
-        printf("Check Value [%04X]: ", check_value);
-        print_binary(&check_value, 2, 0);
-        printf("CRC Output [%04X]: ", crc);
-        print_binary(&crc, 2, 0);
-        return crc == check_value;
-    }
-    else if (params->length == 32)
-    {
-        uint32_t check_value = params->n_bit_params.crc32.check_value;
-        uint32_t crc         = (uint32_t)bplib_crc_get(check_message, 9, params);
-        printf("Check Value [%08X]: ", check_value);
-        print_binary(&check_value, 4, 0);
-        printf("CRC Output [%08X]: ", crc);
-        print_binary(&crc, 4, 0);
-        return crc == check_value;
-    }
-
-    return false;
+    return true;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -180,19 +156,19 @@ int ut_crc(void)
     /* Test 3 */
     uint8_t  v3[]        = {0x7, 0x46, 0x57, 0x37, 0x43, 0x25, 0xf7, 0x47, 0x26, 0x16, 0x36, 0x50};
     uint16_t v3_crc      = 0x0A58;
-    uint16_t v3_crc_calc = test_crc16_vectors(&crc16_x25, v3, sizeof(v3));
+    uint16_t v3_crc_calc = test_crc16_vectors(&BPLIB_CRC16_X25, v3, sizeof(v3));
     ut_assert(v3_crc_calc == v3_crc, "Failed to caluclate correct CRC16 for V3, %04X != %04X\n", v3_crc_calc, v3_crc);
 
     /* Test 4 */
     uint8_t  v4[]        = {0x07, 0x46, 0x57, 0x37, 0x45, 0xf7, 0x47, 0x26, 0x16, 0x36, 0x53, 0x60};
     uint16_t v4_crc      = 0xD9A2;
-    uint16_t v4_crc_calc = test_crc16_vectors(&crc16_x25, v4, sizeof(v4));
+    uint16_t v4_crc_calc = test_crc16_vectors(&BPLIB_CRC16_X25, v4, sizeof(v4));
     ut_assert(v4_crc_calc == v4_crc, "Failed to caluclate correct CRC16 for V4, %04X != %04X\n", v4_crc_calc, v4_crc);
 
     /* Test 5 */
     uint8_t  v5[]        = {0x74, 0x65, 0x73, 0x74, 0x5f, 0x74, 0x72, 0x61, 0x63, 0x65, 0x37};
     uint16_t v5_crc      = 0x441A;
-    uint16_t v5_crc_calc = test_crc16_vectors(&crc16_x25, v5, sizeof(v5));
+    uint16_t v5_crc_calc = test_crc16_vectors(&BPLIB_CRC16_X25, v5, sizeof(v5));
     ut_assert(v5_crc_calc == v5_crc, "Failed to caluclate correct CRC16 for V5, %04X != %04X\n", v5_crc_calc, v5_crc);
 
     /* Return Failures */
