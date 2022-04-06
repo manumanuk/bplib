@@ -32,7 +32,7 @@ RECV_OBJ     += sock.o
 VPATH	    := $(ROOT)
 
 # compiler options for search path for include headers (in form of -I_header_)
-INCLUDES    := -I$(ROOT)
+INCLUDES    := -I$(ROOT) -I../inc
 
 # user customized options
 MY_COPT     ?= -DSOCK_VERBOSE

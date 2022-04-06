@@ -215,7 +215,7 @@ static void *custody_thread(void *parm)
         {
             /* Send Bundle */
             int bytes_sent = socksend(sock, dacs, dacs_size, SOCK_TIMEOUT);
-            if (bytes_sent != dacs_size)
+            if (bytes_sent != (int)dacs_size)
             {
                 fprintf(stderr, "Failed (%d) to send dacs over socket: %s\n", bytes_sent, strerror(errno));
             }

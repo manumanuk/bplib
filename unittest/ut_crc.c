@@ -118,7 +118,7 @@ static bool validate_crc_parameters(bplib_crc_parameters_t *params)
  *-------------------------------------------------------------------------------------*/
 static uint16_t test_crc16_vectors(bplib_crc_parameters_t *params, const uint8_t *vector, const int size)
 {
-    crc_init(params);
+    bplib_crc_init();
     return (uint16_t)bplib_crc_get(vector, size, params);
 }
 
@@ -134,7 +134,7 @@ static uint16_t test_crc16_vectors(bplib_crc_parameters_t *params, const uint8_t
 static void test_crc(bplib_crc_parameters_t *params)
 {
     printf("Testing CRC %s\n", params->name);
-    crc_init(params);
+    bplib_crc_init();
     print_xor_table(params);
     ut_assert(validate_crc_parameters(params), "Failed to validate %s\n", params->name);
 }
